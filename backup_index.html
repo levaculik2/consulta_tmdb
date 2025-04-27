@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Filmes e Séries</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Explorador de Filmes e Séries</h1>
+        </header>
+
+        <main>
+            <div class="search-container">
+                <select id="mediaType" aria-label="Tipo de mídia">
+                    <option value="movie">Filmes</option>
+                    <option value="tv">Séries</option>
+                </select>
+                
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Digite o nome de um filme ou série..."
+                    aria-label="Campo de pesquisa"
+                >
+                
+                <button id="searchButton" aria-label="Pesquisar">
+                    <span>Pesquisar</span>
+                    <div class="spinner hidden"></div>
+                </button>
+            </div>
+
+            <div id="results" class="results-grid"></div>
+        </main>
+
+        <!-- Modal de Detalhes -->
+        <div id="detailsModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal de Detalhes -->
+<div id="movieModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-body">
+      <div class="modal-poster"></div>
+      <div class="modal-info">
+        <h2 id="modal-title"></h2>
+        <div class="meta-info">
+          <span id="modal-year"></span> • 
+          <span id="modal-runtime"></span> • 
+          <span id="modal-rating"></span>
+        </div>
+        <p id="modal-overview"></p>
+  <p id="modal-id">ID TMDB: —</p>
+        <div class="cast-container"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Script no final do body para melhor performance -->
+    <script src="script.js" defer></script>
+</body>
+</html>

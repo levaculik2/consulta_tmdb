@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Filmes e Séries</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Explorador de Filmes e Séries</h1>
+        </header>
+
+        <main>
+            <div class="search-container">
+                <select id="mediaType">
+                    <option value="movie">Filmes</option>
+                    <option value="tv">Séries</option>
+                </select>
+                
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Digite o nome de um filme ou série..."
+                >
+                
+                <button id="searchButton">
+                    <span>Pesquisar</span>
+                    <div class="spinner hidden"></div>
+                </button>
+            </div>
+
+            <div id="results" class="results-grid"></div>
+        </main>
+    </div>
+
+    <!-- Certifique-se que este código está no seu BODY, não dentro de outros elementos -->
+<div id="movieModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-body">
+      <div class="modal-poster">
+        <img src="" alt="">
+      </div>
+      <div class="modal-info">
+        <h2 id="modal-title">Título</h2>
+        <div class="meta-info">
+          <span id="modal-year">Ano</span> • 
+          <span id="modal-runtime">Duração</span> • 
+          <span id="modal-rating">⭐ 0.0</span>
+        </div>
+        <p id="modal-overview">Sinopse...</p>
+        <p><span id="modal-id">0</span></p> <!-- corrigido -->
+        <div class="cast-container">
+          <!-- Elenco será inserido aqui -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>

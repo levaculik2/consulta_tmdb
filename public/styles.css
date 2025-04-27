@@ -1,0 +1,463 @@
+/* ===== VARIÁVEIS GLOBAIS ===== */
+:root {
+  --primary-color: #01b4e4; /* Azul TMDB */
+  --secondary-color: #90cea1; /* Verde TMDB */
+  --text-color: #333; /* Cor do texto normal */
+  --bg-color: #f5f5f5; /* Cor de fundo clara */
+  --card-bg: #fff; /* Fundo claro dos cards */
+  --error-color: #e74c3c; /* Cor de erro */
+  --radius: 8px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --transition: 0.3s ease;
+}
+
+/* ===== RESET & BASE ===== */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+/* ===== COMPONENTES ===== */
+/* Cabeçalho */
+header h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: var(--space-lg) 0;
+}
+
+/* Barra de Pesquisa */
+.search-container {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+#mediaType, #searchInput {
+  padding: var(--space-sm);
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+#mediaType {
+  min-width: 100px;
+}
+
+#searchInput {
+  flex: 1;
+}
+
+#searchInput:focus, #mediaType:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(1, 180, 228, 0.2);
+}
+
+#searchButton {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color var(--transition);
+}
+
+#searchButton:hover {
+  background-color: #0099c3;
+}
+
+#searchButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(1, 180, 228, 0.5);
+}
+
+#searchButton:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Cards de Mídia */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-md);
+}
+
+.media-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.media-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.media-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.media-info {
+  padding: var(--space-md);
+}
+
+.media-info h3 {
+  margin-bottom: var(--space-sm);
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.star {
+  color: gold;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal:not(.hidden) {
+  display: block;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 800px;
+  display: flex; /* Usamos flexbox para o modal */
+}
+
+/* Estilo da imagem do poster no modal */
+.modal-poster img {
+  width: 200px; /* Ajuste da imagem */
+  height: auto;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+/* Estilo da parte de informações do modal */
+.modal-info {
+  max-width: 700px;
+  flex: 1; /* Deixa a parte do texto ocupar o espaço restante */
+  overflow: hidden;
+}
+
+/* Atores */
+.actor {
+  margin: var(--space-sm) 0;
+  padding: var(--space-sm);
+  background: rgba(0,0,0,0.05);
+  border-radius: var(--radius);
+  transition: background-color var(--transition);
+}
+
+.actor:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+/* Estados */
+.loading, .error, .no-results {
+  text-align: center;
+  padding: var(--space-lg);
+  font-size: 1.125rem;
+  grid-column: 1 / -1;
+}
+
+.loading {
+  color: var(--primary-color);
+}
+
+.error {
+  color: var(--error-color);
+}
+
+.no-results {
+  color: #666;
+}
+
+/* Spinner */
+.spinner {
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top: 3px solid #fff;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin-left: var(--space-sm);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== TEMAS ===== */
+/* Dark Mode - Preferência do Sistema */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #f0f0f0; /* Texto claro no dark mode */
+    --bg-color: #1a1a1a; /* Fundo escuro */
+    --card-bg: #2d2d2d; /* Cards com fundo escuro */
+    --primary-color: #4ec4f1; /* Azul claro */
+    --secondary-color: #90cea1; /* Verde */
+  }
+
+  /* Ajustes de texto e fundo no modo escuro */
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .media-card {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+  }
+
+  .media-info h3 {
+    color: var(--text-color);
+  }
+
+  .rating {
+    color: var(--text-color);
+  }
+
+  .actor {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  .actor:hover {
+    background-color: rgba(255,255,255,0.2);
+  }
+
+  .no-results {
+    color: #bbb;
+  }
+
+  .modal-content {
+    background-color: #333;
+  }
+
+  .modal-poster img {
+    border: 2px solid #444;
+  }
+
+  .error {
+    color: var(--error-color);
+  }
+}
+
+/* Dark Mode - Classe manual */
+.dark-theme {
+  --text-color: #f0f0f0;
+  --bg-color: #1a1a1a;
+  --card-bg: #2d2d2d;
+  --primary-color: #4ec4f1;
+  --secondary-color: #90cea1;
+}
+
+.dark-theme body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.dark-theme .media-card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+.dark-theme .media-info h3 {
+  color: var(--text-color);
+}
+
+.dark-theme .rating {
+  color: var(--text-color);
+}
+
+.dark-theme .actor {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.dark-theme .actor:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+.dark-theme .modal-content {
+  background-color: #333;
+}
+
+.dark-theme .modal-poster img {
+  border: 2px solid #444;
+}
+
+.dark-theme .error {
+  color: var(--error-color);
+}
+
+.dark-theme .no-results {
+  color: #bbb;
+}
+
+/* Botão do Tema */
+#themeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: background-color var(--transition);
+}
+
+#themeToggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .modal-body {
+    flex-direction: column;
+  }
+
+  .modal-poster {
+    flex: 1;
+  }
+
+  .modal-content {
+    width: 90%;
+    margin: 5% auto;
+  }
+
+  .modal-poster img {
+    width: 150px; /* Ajuste a largura da imagem no celular */
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+/* ============================
+   AJUSTES DE LAYOUT DO MODAL
+   ============================ */
+.modal-content {
+  display: flex;           /* imagem + info lado a lado */
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.modal-body {
+  display: flex;
+  gap: var(--space-md);
+}
+
+/* Tamanho controlado da imagem do poster */
+.modal-poster img {
+  width: 200px;            /* ajuste a largura que preferir */
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Faz a seção de texto ocupar o resto do espaço */
+.modal-info {
+  flex: 1;
+  overflow-y: auto;        /* caso o texto seja muito longo */
+}
+
+/* ============================
+   RESPONSIVIDADE DO MODAL
+   ============================ */
+@media (max-width: 768px) {
+  .modal-content {
+    flex-direction: column; /* empilha imagem e texto */
+    align-items: center;
+  }
+
+  .modal-poster img {
+    width: 150px;           /* menor em telas pequenas */
+    margin-bottom: var(--space-md);
+  }
+
+  .modal-info {
+    max-width: 100%;
+  }
+}
+
+/* ============================
+   MELHORIA DO DARK MODE
+   ============================ */
+.dark-theme .modal-content {
+  background-color: var(--card-bg);
+}
+
+.dark-theme .modal-poster img {
+  border: 2px solid #444;
+}
+
